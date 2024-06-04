@@ -1,14 +1,38 @@
 import React, { useState } from 'react';
 import './login.css';
 import { Button, Container, Form } from 'react-bootstrap'; // Corrected import statement
+import { useEffect } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-  const [playerOne, setPlayerOne] = useState('');
-  const [playerTwo, setPlayerTwo] = useState('');
+  const navigate=useNavigate();
+  const [name1, setname1] = useState('');
+  const [name2, setname2] = useState('');
+  const [values, setValues] = useState({
+    name1: "",
+    name2: "",
+  });
+ 
 
-  const handleStartGame = () => {
-    // Placeholder function to handle starting the game
-  };
+  const handleStartGame = async(e) => {
+    e.preventDefault();
+    setValues(
+        { 'name1': name1 , 
+          'name2': name2} );
+    navigate('/play')
+
+try {
+    const response = await axios.post('http://127.0.0.1:8000/users/', values);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }};
+
+  useEffect(() => {
+    console.log(values);
+   }, [values]);
+
 
   return (
     <>
@@ -21,8 +45,9 @@ function Login() {
                 <Form.Control
                   type="text"
                   placeholder="Enter Player One"
-                  value={playerOne}
-                  onChange={e => setPlayerOne(e.target.value)}
+                  name='name1'
+                  value={name1}
+                  onChange={e => setname1(e.target.value)}
                   className='input-l text-white'
                 />
               </Form.Group>
@@ -31,13 +56,14 @@ function Login() {
                 <Form.Control
                   type="text"
                   placeholder="Enter Player Two"
-                  value={playerTwo}
-                  onChange={e => setPlayerTwo(e.target.value)}
+                  name='name2'
+                  value={name2}
+                  onChange={e => setname2(e.target.value)}
                   className='input-l'
                 />
               </Form.Group>
             </Form>
-          <button className="btn-lg start-button" onClick={() => navigate('/Login')}> {/* Correctly calling navigate function */}
+          <button className="btn-lg start-button" onClick={handleStartGame}>
                     <span className='span'>START</span>
               </button>
         </div>
