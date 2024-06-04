@@ -1,0 +1,21 @@
+:root {
+    --black-700: #000;
+    --blueGradiant: #3b2a9f;
+    --primary-50: #6854d6;
+    --primary-300 :#322966;
+    --secondery--2:#FA8305;
+    --box-bg:#1C140F;
+  }
+
+.r{
+    gap: 70vh;
+}
+.game-info{
+    font-size: 40px;
+font-weight: 700;
+}
+.board{
+    width: 40vh;
+    height: 40vh;
+    margin-top: 15vh;
+}
