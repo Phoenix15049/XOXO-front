@@ -30,13 +30,7 @@ function Login() {
               param2: name2
             } 
           });
-    console.log(name1);
-try {
-    const response = await axios.post('http://127.0.0.1:8000/users/', values);
-    console.log(response);
-  } catch (error) {
-    console.log(error);
-  }};
+    console.log(name1);};
 
 
   useEffect(() => {

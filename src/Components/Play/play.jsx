@@ -1,5 +1,5 @@
 import {  useState,useEffect } from 'react'
-import { Button, Container, Form } from 'react-bootstrap'; 
+import { Button} from 'react-bootstrap'; 
 import { useLocation } from 'react-router-dom';
 import './play.css';
 import axios from 'axios'
@@ -33,33 +33,57 @@ function PlayeGame(){
     setIsO(!isO); // Switch player
     const result = checkWinner(newBoard);
     if (result === "X") {
-      setwinValues(
-        { 'name': param1 , 
-          'status': "WIN"} );
-      setloseValues(
-          { 'name': param2 , 
-            'status': "LOSE"} );
-
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/socrs', {
+          name: param1 ,
+          status: 'WIN'
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+       
+        const response2 = await axios.post('http://127.0.0.1:8000/socrs', {
+          name: param2 ,
+          status: 'LOSE'
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log(response.data);
+        console.log(response2.data);
+  
+      } catch (error) {
+        console.error(error.response.data);
+      }
+     
     }else if(result === "O"){
-      setwinValues(
-        { 'name': param2, 
-          'status': "WIN"} );
-      setloseValues(
-          { 'name': param1 , 
-            'status': "LOSE"} );
-    }
-    console.log(winValues);
-    if (result !== null) {
-      axios.post('http://127.0.0.1:8000/socrs/', winValues)
-      .then(response => {
-         console.log(response.data);
-       })
-      .catch(error => {
-         console.log(error);
-       });
+      try {
+        const response = await axios.post('http://127.0.0.1:8000/socrs', {
+          name: param2 ,
+          status: 'WIN'
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const response2 = await axios.post('http://127.0.0.1:8000/socrs', {
+          name: param1 ,
+          status: 'LOSE'
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log(response2.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error.response.data);
+      }
     
-      
     }
+    
   };
 
   useEffect(() => {
@@ -78,7 +102,6 @@ function PlayeGame(){
     for (let line of lines) {
       const [a, b, c] = line;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        // console.log(board[a]);
         return board[a];
       }
     }
