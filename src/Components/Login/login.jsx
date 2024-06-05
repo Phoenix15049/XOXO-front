@@ -4,11 +4,14 @@ import { Button, Container, Form } from 'react-bootstrap'; // Corrected import s
 import { useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import PlayeGame from '../Play/play'
 
 function Login() {
   const navigate=useNavigate();
   const [name1, setname1] = useState('');
   const [name2, setname2] = useState('');
+  const [gamestarted,setgamestarted]=useState(0);
+  // const myProps = { name1: "value1", name2: "value2" };
   const [values, setValues] = useState({
     name1: "",
     name2: "",
@@ -17,17 +20,24 @@ function Login() {
 
   const handleStartGame = async(e) => {
     e.preventDefault();
+    setgamestarted(1)
     setValues(
         { 'name1': name1 , 
           'name2': name2} );
-    navigate('/play')
-
+          navigate('/play', { 
+            state: { 
+              param1: name1 ,
+              param2: name2
+            } 
+          });
+    console.log(name1);
 try {
     const response = await axios.post('http://127.0.0.1:8000/users/', values);
     console.log(response);
   } catch (error) {
     console.log(error);
   }};
+
 
   useEffect(() => {
     console.log(values);
@@ -36,7 +46,7 @@ try {
 
   return (
     <>
-      <div className="d-flex flex-column align-items-center c">
+     <div className="d-flex flex-column align-items-center c">
         <h1 className="text-white mt-5 mb-4 fw-bold title">Tic-Tac-Toe</h1>
         <div className="text-white d-flex flex-column align-items-center justify-content-center log">
         
@@ -69,6 +79,8 @@ try {
         </div>
         <p className='foot'>Proved By ELAHE FTL 2012</p>
       </div>
+      {gamestarted===1 && <PlayeGame name1={name1}  name2={name2}/>}
+ 
     </>
   );
 }

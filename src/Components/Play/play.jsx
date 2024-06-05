@@ -1,12 +1,16 @@
-import {  useState } from 'react'
+import {  useState,useEffect } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'; 
+import { useLocation } from 'react-router-dom';
 import './play.css';
 function PlayeGame(){
+
+
   const [board, setBoard] = useState(Array(9).fill(null));
   // State to track the current player: true for 'O', false for 'X'
   const [isO, setIsO] = useState(true);
   const [winner, setWinner] = useState("");
-
+  let location = useLocation();
+  let { param1, param2 } = location.state
 
   const handleClick = (index) => {
     if (board[index] || checkWinner(board)) {
@@ -17,9 +21,20 @@ function PlayeGame(){
     setBoard(newBoard);
     setIsO(!isO); // Switch player
     const result = checkWinner(newBoard);
-    setWinner(result)
-  console.log(winner);
+    if (result === "X") {
+      setWinner(param1)
+    }else if(result === "O"){
+      setWinner(param2)
+    }
+    if (result !== null) {
+      
+      
+    }
   };
+
+  useEffect(() => {
+    console.log(winner); 
+  }, [winner]); 
 
   const checkWinner = (board) => {
     const lines = [
@@ -30,7 +45,7 @@ function PlayeGame(){
     for (let line of lines) {
       const [a, b, c] = line;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        console.log(board[a]);
+        // console.log(board[a]);
         return board[a];
       }
     }
@@ -64,8 +79,8 @@ function PlayeGame(){
     <div className="vh-100 d-flex flex-column align-items-center " >
       <h1 className="text-white mt-5 mb-4 fw-bold title">Tic-Tac-Toe</h1>
       <div className="d-flex flex-row r mb-5">
-        <span className="text-info game-info">Blue is : X</span> &nbsp;
-        <span className="text-danger game-info ">Red is : O</span>
+        <span className="text-info game-info">{param1}: X</span> &nbsp;
+        <span className="text-danger game-info ">{param2} : O</span>
       </div>
 
       <div className=" d-flex flex-column align-items-center justify-content-center board">
