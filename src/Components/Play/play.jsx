@@ -2,17 +2,28 @@ import {  useState,useEffect } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'; 
 import { useLocation } from 'react-router-dom';
 import './play.css';
-function PlayeGame(){
+import axios from 'axios'
 
+
+function PlayeGame(){
 
   const [board, setBoard] = useState(Array(9).fill(null));
   // State to track the current player: true for 'O', false for 'X'
   const [isO, setIsO] = useState(true);
   const [winner, setWinner] = useState("");
   let location = useLocation();
-  let { param1, param2 } = location.state
+  let { param1, param2 } = location.state;
+  const [winValues, setwinValues] = useState({
+    name: "",
+    status: "",
+  });
+  const [loseValues, setloseValues] = useState({
+    name: "",
+    status: "",
+  });
+ 
 
-  const handleClick = (index) => {
+  const handleClick = async(index) => {
     if (board[index] || checkWinner(board)) {
       return;
     }
@@ -22,19 +33,41 @@ function PlayeGame(){
     setIsO(!isO); // Switch player
     const result = checkWinner(newBoard);
     if (result === "X") {
-      setWinner(param1)
+      setwinValues(
+        { 'name': param1 , 
+          'status': "WIN"} );
+      setloseValues(
+          { 'name': param2 , 
+            'status': "LOSE"} );
+
     }else if(result === "O"){
-      setWinner(param2)
+      setwinValues(
+        { 'name': param2, 
+          'status': "WIN"} );
+      setloseValues(
+          { 'name': param1 , 
+            'status': "LOSE"} );
     }
+    console.log(winValues);
     if (result !== null) {
-      
+      axios.post('http://127.0.0.1:8000/socrs/', winValues)
+      .then(response => {
+         console.log(response.data);
+       })
+      .catch(error => {
+         console.log(error);
+       });
+    
       
     }
   };
 
   useEffect(() => {
-    console.log(winner); 
-  }, [winner]); 
+    console.log(winValues); 
+  }, [winValues]); 
+  useEffect(() => {
+    console.log(loseValues); 
+  }, [loseValues]); 
 
   const checkWinner = (board) => {
     const lines = [
@@ -56,7 +89,6 @@ function PlayeGame(){
     return (
       <div xs={4} className="p-2">
         <Button 
-          
           style={{
             backgroundColor: '#1C140F',
             color: board[index] === 'O' ? '#FF0000' : '#3b2a9f',
