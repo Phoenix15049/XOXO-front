@@ -8,19 +8,14 @@ import axios from 'axios'
 function PlayeGame(){
 
   const [board, setBoard] = useState(Array(9).fill(null));
+  const [x,setx]=useState("X")
+  const [o,seto]=useState("O")
+
   // State to track the current player: true for 'O', false for 'X'
   const [isO, setIsO] = useState(true);
-  const [winner, setWinner] = useState("");
   let location = useLocation();
   let { param1, param2 } = location.state;
-  const [winValues, setwinValues] = useState({
-    name: "",
-    status: "",
-  });
-  const [loseValues, setloseValues] = useState({
-    name: "",
-    status: "",
-  });
+ 
  
 
   const handleClick = async(index) => {
@@ -33,6 +28,8 @@ function PlayeGame(){
     setIsO(!isO); // Switch player
     const result = checkWinner(newBoard);
     if (result === "X") {
+      setx("Winner")
+      seto("Loser")
       try {
         const response = await axios.post('http://127.0.0.1:8000/socrs', {
           name: param1 ,
@@ -50,7 +47,7 @@ function PlayeGame(){
           headers: {
             'Content-Type': 'application/json'
           }
-        });
+        }); 
         console.log(response.data);
         console.log(response2.data);
   
@@ -59,6 +56,8 @@ function PlayeGame(){
       }
      
     }else if(result === "O"){
+      seto("Winner")
+      setx("Loser")
       try {
         const response = await axios.post('http://127.0.0.1:8000/socrs', {
           name: param2 ,
@@ -85,13 +84,6 @@ function PlayeGame(){
     }
     
   };
-
-  useEffect(() => {
-    console.log(winValues); 
-  }, [winValues]); 
-  useEffect(() => {
-    console.log(loseValues); 
-  }, [loseValues]); 
 
   const checkWinner = (board) => {
     const lines = [
@@ -134,8 +126,8 @@ function PlayeGame(){
     <div className="vh-100 d-flex flex-column align-items-center " >
       <h1 className="text-white mt-5 mb-4 fw-bold title">Tic-Tac-Toe</h1>
       <div className="d-flex flex-row r mb-5">
-        <span className="text-info game-info">{param1}: X</span> &nbsp;
-        <span className="text-danger game-info ">{param2} : O</span>
+        <span className="text-info game-info">{param1}: {x}</span> &nbsp;
+        <span className="text-danger game-info ">{param2} : {o}</span>
       </div>
 
       <div className=" d-flex flex-column align-items-center justify-content-center board">

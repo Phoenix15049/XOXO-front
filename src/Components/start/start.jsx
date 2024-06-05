@@ -13,7 +13,7 @@ function Start() {
           <button className="btn-lg start-button" onClick={() => navigate('/Login')}> {/* Correctly calling navigate function */}
             <span className='span'>START</span>
           </button>
-          <a className="btn-lg texr-white" onClick={() => alert('View Scores')}>
+          <a className="btn-lg texr-white" onClick={() => navigate('/scores')}>
             SCORES
           </a>
         </div>

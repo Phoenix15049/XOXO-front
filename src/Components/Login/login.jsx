@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './login.css';
 import { Button, Container, Form } from 'react-bootstrap'; // Corrected import statement
 import { useEffect } from 'react'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import PlayeGame from '../Play/play'
 
@@ -39,7 +38,7 @@ function Login() {
 
 
   return (
-    <>
+    <> 
      <div className="d-flex flex-column align-items-center c">
         <h1 className="text-white mt-5 mb-4 fw-bold title">Tic-Tac-Toe</h1>
         <div className="text-white d-flex flex-column align-items-center justify-content-center log">
@@ -73,7 +72,6 @@ function Login() {
         </div>
         <p className='foot'>Proved By ELAHE FTL 2012</p>
       </div>
-      {gamestarted===1 && <PlayeGame name1={name1}  name2={name2}/>}
  
     </>
   );
