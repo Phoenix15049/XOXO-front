@@ -17,7 +17,6 @@ function PlayeGame(){
   let location = useLocation();
   let { param1, param2 } = location.state;
  
- 
 
   const handleClick = async(index) => {
     if (board[index] || checkWinner(board)) {

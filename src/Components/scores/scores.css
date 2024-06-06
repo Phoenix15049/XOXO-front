@@ -1,3 +1,14 @@
+:root {
+    --black-700: #000;
+    --blueGradiant: #3b2a9f;
+    --primary-50: #6854d6;
+    --primary-300 :#322966;
+    --secondery--2:#FA8305;
+  }
+
 .c2{
-    gap:80px;
+    gap:50px;
+}
+.player-table{
+    background-color: var(--blueGradiant);
 }
