@@ -10,6 +10,7 @@ function PlayeGame(){
   const [board, setBoard] = useState(Array(9).fill(null));
   const [x,setx]=useState("X")
   const [o,seto]=useState("O")
+  const [winner,setwinner]=useState("")
 
   // State to track the current player: true for 'O', false for 'X'
   const [isO, setIsO] = useState(true);
@@ -28,8 +29,7 @@ function PlayeGame(){
     setIsO(!isO); // Switch player
     const result = checkWinner(newBoard);
     if (result === "X") {
-      setx("Winner")
-      seto("Loser")
+     setwinner(param1)
       try {
         const response = await axios.post('http://127.0.0.1:8000/socrs', {
           name: param1 ,
@@ -50,14 +50,15 @@ function PlayeGame(){
         }); 
         console.log(response.data);
         console.log(response2.data);
+        setx(response.data.score)
+        seto(response2.data.score)
   
       } catch (error) {
         console.error(error.response.data);
       }
      
     }else if(result === "O"){
-      seto("Winner")
-      setx("Loser")
+      setwinner(param2)
       try {
         const response = await axios.post('http://127.0.0.1:8000/socrs', {
           name: param2 ,
@@ -75,8 +76,9 @@ function PlayeGame(){
             'Content-Type': 'application/json'
           }
         });
-        console.log(response2.data);
-        console.log(response.data);
+        setx(response2.data.score)
+        seto(response.data.score)
+  
       } catch (error) {
         console.error(error.response.data);
       }
@@ -125,6 +127,7 @@ function PlayeGame(){
   return (
     <div className="vh-100 d-flex flex-column align-items-center " >
       <h1 className="text-white mt-5 mb-4 fw-bold title">Tic-Tac-Toe</h1>
+      <span className="text-success game-info "> Winner : {winner} </span>
       <div className="d-flex flex-row r mb-5">
         <span className="text-info game-info">{param1}: {x}</span> &nbsp;
         <span className="text-danger game-info ">{param2} : {o}</span>
