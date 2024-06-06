@@ -38,7 +38,7 @@ function Scores() {
             <div className="d-flex flex-column align-items-center c2">
                 <h1 className="text-white mt-5 fw-bold title">Tic-Tac-Toe</h1>
                 <h2 className="text-white fw-bold">SCORE TABLE (TOP 10)</h2>
-                <table className="text-white w-75 player-table" style={{ backgroundColor: '#3b2a9f' }}>
+                <table className="text-white w-75 player-table">
                     <thead>
                         <tr>
                             <th className="text-center pb-4 fs-2">ROW</th>
@@ -48,8 +48,9 @@ function Scores() {
                     </thead>
                     <tbody>
                     {players.map((scoreObj, index) => (
-                      <tr key={index}>
+                      <tr key={index} className={index % 2 === 0? 'even-row' : 'odd-row'}>
                         <td className="text-center fs-2 pb-2 fw-bold">{index+1}</td>
+                       
                         <td className="text-center fs-2 pb-2  fw-bold">{scoreObj.name}</td>
                         <td className="text-center fs-2 pb-2  fw-bold">{scoreObj.score}</td>
                       </tr>

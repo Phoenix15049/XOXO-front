@@ -12,3 +12,11 @@
 .player-table{
     background-color: var(--blueGradiant);
 }
+
+.odd-row {
+    background-color: rgba(0,100,1,0.3);
+}
+
+.even-row {
+    background-color: var(--blueGradiant);
+}
